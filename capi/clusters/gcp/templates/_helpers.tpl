@@ -62,7 +62,7 @@ Create a MachinePool for the given values
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
-  name: {{ .name }}
+  name: {{ .Values.cluster.name }}-{{ .name }}
   annotations:
     helm.sh/resource-policy: keep
     {{- if (hasKey .values "annotations") -}}
@@ -112,7 +112,7 @@ Params:
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: GCPManagedMachinePool
 metadata:
-  name: {{ .name }}
+  name: {{ .Values.cluster.name }}-{{ .name }}
   annotations:
     helm.sh/resource-policy: keep
     {{- if (hasKey .values "annotations") -}}
