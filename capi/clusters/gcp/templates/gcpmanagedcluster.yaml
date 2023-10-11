@@ -1,0 +1,44 @@
+{{- if (eq .Values.type "managed") -}}
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: GCPManagedCluster
+metadata:
+  name: {{ .Values.cluster.name }}
+  labels:
+    {{- include "workload-cluster.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  project: {{ .Values.cluster.project }}
+  region: {{ .Values.cluster.region }}
+  {{- with .Values.cluster.additionalLabels }}
+  additionalLabels:
+  {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  controlPlaneEndpoint:
+    host: ""
+    port: 0
+  {{- with .Values.cluster.addonsConfig }}
+  addonsConfig:
+  {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  network:
+    {{- with .Values.cluster.network }}
+    name: {{ .name }}
+    autoCreateSubnetworks: {{ .autoCreateSubnetworks }}
+    datapathProvider: {{ .datapathProvider }}
+    {{- end }}
+    subnets:
+      {{- range .Values.cluster.subnets }}
+      - name: {{ .name }}
+        region: {{ $.Values.cluster.region }}
+        cidrBlock: {{ .cidrBlock }}
+        description: {{ .description }}
+        {{- with .secondaryCidrBlocks }}
+        secondaryCidrBlocks:
+        {{- . | toYaml | nindent 10 }}
+        {{- end }}
+        privateGoogleAccess: {{ .privateGoogleAccess }}
+        enableFlowLogs: {{ .enableFlowLogs }}
+        purpose: {{ .purpose }}
+      {{- end }}
+{{- end }}

@@ -1,0 +1,7 @@
+cluster:
+  name: {{ configuration.cluster }}
+  kubernetesVersion: {{ configuration.kubernetesVersion }}
+  project: {{ configuration.project }}
+  region: {{ configuration.region }}
+  network:
+    name: {{ configuration.vpc_name | quote }}
