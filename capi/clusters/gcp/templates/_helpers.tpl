@@ -86,7 +86,7 @@ spec:
       bootstrap:
         dataSecretName: ""
       infrastructureRef:
-        name: {{ .name }}
+        name: {{ .ctx.Values.cluster.name }}-{{ .name }}
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: GCPManagedMachinePool
 {{- end }}
