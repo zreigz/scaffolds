@@ -1,0 +1,10 @@
+name: datadog
+description: "packaged datadog agent able to run in-cluster"
+global: true
+configuration:
+- name: apiKey
+  type: STRING
+  documentation: the api key for your datadog account
+- name: appKey
+  type: STRING
+  documentation: the app key to use with this agent
