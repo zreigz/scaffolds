@@ -14,7 +14,7 @@ spec:
   resourceGroupName: {{ .Values.cluster.resourceGroupName }}
   nodeResourceGroupName: {{ .Values.cluster.nodeResourceGroupName }}
   subscriptionID: {{ .Values.cluster.subscriptionID }}
-  version: {{ include "cluster.kubernetesVersion" . }}
+  version: {{ .Values.cluster.kubernetesVersion }}
   {{- if ne .Values.cluster.sshPublicKey "skip" }}
   sshPublicKey: {{ .Values.cluster.sshPublicKey | quote }}
   {{- end }}

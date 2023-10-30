@@ -51,18 +51,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Creates the Kubernetes version for the cluster
-# TODO: this should actually be used to sanatize the `.Values.cluster.kubernetesVersion` value to what the providers support instead of defining these static versions
-*/}}
-{{- define "cluster.kubernetesVersion" -}}
-{{- if .Values.cluster.kubernetesVersion -}}
-{{ .Values.cluster.kubernetesVersion }}
-{{- else if eq .Values.provider "kind" -}}
-v1.25.11
-{{- end }}
-{{- end }}
-
-{{/*
 Create a MachinePool for the given values
   ctx = . context
   name = the name of the MachinePool resource
@@ -74,7 +62,7 @@ Create a MachinePool for the given values
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
 metadata:
-  name: {{ .name }}
+  name: {{ .ctx.Values.cluster.name }}-{{ .name }}
   annotations:
     helm.sh/resource-policy: keep
     {{- if (hasKey .values "annotations") -}}
@@ -93,21 +81,14 @@ spec:
   replicas: {{ $replicas }}
   template:
     spec:
-      {{- if or (eq .ctx.Values.provider "gcp") (eq .ctx.Values.provider "azure") (eq .ctx.Values.provider "kind") }}
-      version: {{ .values.kubernetesVersion | default (include "cluster.kubernetesVersion" .ctx) | quote }}
-      {{- end }}
+      version: {{ .values.kubernetesVersion | default .ctx.Values.cluster.kubernetesVersion | quote }}
       clusterName: {{ .ctx.Values.cluster.name }}
       bootstrap:
-        {{- if or (eq .ctx.Values.provider "gcp") (eq .ctx.Values.provider "azure") (eq .ctx.Values.provider "aws") }}
         dataSecretName: ""
-        {{- end }}
-        {{- if eq .ctx.Values.provider "kind" }}
-        {{- include "workers.configref" .ctx | nindent 8 }}
-        {{- end }}
       infrastructureRef:
         name: {{ .ctx.Values.cluster.name }}-{{ .name }}
-        apiVersion: {{ include "workers.infrastructure.apiVersion" .ctx }}
-        kind: {{ include "workers.infrastructure.kind" .ctx }}
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: AzureManagedMachinePool
 {{- end }}
 
 {{/*
