@@ -194,6 +194,7 @@ workers:
             key: plural.sh/capacityType
             value: SPOT
     small-burst-on-demand:
+      isMultiAZ: true
       replicas: 1
       spec:
         labels:
@@ -207,6 +208,7 @@ workers:
         updateConfig:
           maxUnavailable: 1
     medium-burst-on-demand:
+      isMultiAZ: true
       spec:
         labels:
           plural.sh/capacityType: ON_DEMAND
@@ -218,6 +220,7 @@ workers:
           maxSize: 27
           minSize: 0
     large-burst-on-demand:
+      isMultiAZ: true
       spec:
         labels:
           plural.sh/capacityType: ON_DEMAND

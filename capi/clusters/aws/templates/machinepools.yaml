@@ -4,9 +4,6 @@
 {{- range $name, $values := .Values.workers.groups }}
 {{- with $currentScope}}
 {{- $isMultiAZ := ($values | default dict).isMultiAZ | default $defaultVals.isMultiAZ }}
-{{- if not $isMultiAZ }}
-  {{- fail (printf "Invalid value for isMultiAZ. AWS currently only supports `true` for this value") }}
-{{- end }}
 {{- $availabilityZones := ($values.spec | default dict).availabilityZones | default $defaultVals.spec.availabilityZones }}
 {{- if and (not $isMultiAZ) (not $availabilityZones) }}
   {{- fail (printf "Invalid value for isMultiAZ. availabilityZones must be set") }}

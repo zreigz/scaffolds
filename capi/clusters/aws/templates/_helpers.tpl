@@ -91,28 +91,41 @@ spec:
         kind: GCPManagedMachinePool
 {{- end }}
 
-
 {{/*
-Function to template an GCPManagedMachinePool resource.
+Function to template an AWSManagedMachinePool resource.
 Params:
   ctx = . context
-  name = the name of the GCPManagedMachinePool resource
-  defaultVals = the default values for the GCPManagedMachinePool resource
-  values = the values for this specific GCPManagedMachinePool resource
-  availabilityZones = the availability zones for the GCPManagedMachinePool
+  name = the name of the AWSManagedMachinePool resource
+  defaultVals = the default values for the AWSManagedMachinePool resource
+  values = the values for this specific AWSManagedMachinePool resource
+  availabilityZones = the availability zones for the AWSManagedMachinePool
 */}}
 {{- define "workers.managedMachinePool" -}}
+{{- $validAmiTypes := (list "AL2_x86_64" "AL2_x86_64_GPU" "AL2_ARM_64") -}}
+{{- $validCapacityTypes := (list "onDemand" "spot") -}}
+{{- $amiType := (.values.spec | default dict).amiType | default .defaultVals.spec.amiType }}
+{{- if not (has $amiType $validAmiTypes) }}
+  {{- fail (printf "Invalid value for amiType: %s. Expected one of: %s" $amiType $validAmiTypes) }}
+{{- end }}
+{{- $capacityType := (.values.spec | default dict).capacityType | default .defaultVals.spec.capacityType }}
+{{- if not (has $capacityType $validCapacityTypes) }}
+  {{- fail (printf "Invalid value for capacityType: %s. Expected one of: %s" $capacityType $validCapacityTypes) }}
+{{- end }}
 {{- $scaling := (.values.spec | default dict).scaling | default .defaultVals.spec.scaling }}
 {{- if $scaling }}
-{{- if not (and (hasKey $scaling "minCount") (hasKey $scaling "maxCount")) }}
-  {{- fail (printf "Invalid value for scaling. Both minCount and maxCount must be set") }}
+{{- if not (and (hasKey $scaling "minSize") (hasKey $scaling "maxSize")) }}
+  {{- fail (printf "Invalid value for scaling. Both minSize and maxSize must be set") }}
 {{- end }}
 {{- end }}
-{{- $management := (.values.spec | default dict).management | default .defaultVals.spec.management }}
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-kind: GCPManagedMachinePool
+{{- $updateConfig := (.values.spec | default dict).updateConfig | default .defaultVals.spec.updateConfig }}
+{{- if $updateConfig }}
+{{- if and (hasKey $updateConfig "maxUnavailable") (hasKey $updateConfig "maxSurge") }}
+  {{- fail (printf "Invalid value for updateConfig. Only one of maxUnavailable and maxSurge can be set") }}
+{{- end }}
+{{- end }}
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSManagedMachinePool
 metadata:
-  name: {{ .ctx.Values.cluster.name }}-{{ .name }}
   annotations:
     helm.sh/resource-policy: keep
     {{- if (hasKey .values "annotations") -}}
@@ -126,42 +139,55 @@ metadata:
     {{- else -}}
     {{- toYaml .defaultVals.labels | nindent 4 }}
     {{- end }}
+  name: {{ .name }}
 spec:
-  nodePoolName: {{ .name }}
+  amiType: {{ $amiType }}
+  amiVersion: {{ (.values.spec | default dict).amiVersion | default .defaultVals.spec.amiVersion }}
+  capacityType: {{ $capacityType }}
+  diskSize: {{ (.values.spec | default dict).diskSize | default .defaultVals.spec.diskSize }}
+  eksNodegroupName: {{ .name }}
+  instanceType: {{ (.values.spec | default dict).instanceType | default .defaultVals.spec.instanceType }}
+  {{- if or (.defaultVals.spec.roleName) ((.values.spec | default dict).roleName) }}
+  roleName: {{ (.values.spec | default dict).roleName | default .defaultVals.spec.roleName }}
+  {{- end }}
   {{- if $scaling }}
   scaling:
     {{- toYaml $scaling | nindent 4 }}
   {{- end }}
-  {{- if $management }}
-  management:
-    {{- toYaml $management | nindent 4 }}
+  {{- if .availabilityZones }}
+  availabilityZones: {{- toYaml .availabilityZones | nindent 2 }}
+  {{- end}}
+  {{- if or (.defaultVals.spec.subnetIDs) ((.values.spec | default dict).subnetIDs) }}
+  subnetIDs:
+  {{- toYaml ((.values.spec | default dict).subnetIDs | default .defaultVals.spec.subnetIDs) | nindent 2 }}
   {{- end }}
-  kubernetesLabels:
-    {{- if (dig "spec" "kubernetesLabels" .values) }}
-    {{- toYaml (merge .values.spec.kubernetesLabels .defaultVals.spec.kubernetesLabels) | nindent 4 }}
-    {{- else }}
-    {{- toYaml .defaultVals.spec.kubernetesLabels | nindent 4 }}
+  labels:
+    {{- if (dig "spec" "labels" .values) -}}
+    {{- toYaml (merge .values.spec.labels .defaultVals.spec.labels)| nindent 4 }}
+    {{- else -}}
+    {{- toYaml .defaultVals.spec.labels | nindent 4 }}
     {{- end }}
-  {{- if or (.defaultVals.spec.kubernetesTaints) ((.values.spec | default dict).kubernetesTaints) }}
-  kubernetesTaints:
-  {{- toYaml ((.values.spec | default dict).kubernetesTaints | default .defaultVals.spec.kubernetesTaints) | nindent 4 }}
-  {{- end }}
-  additionalLabels:
-    {{- if (dig "spec" "additionalLabels" .values) }}
-    {{- toYaml (merge .values.spec.additionalLabels .defaultVals.spec.additionalLabels) | nindent 4 }}
-    {{- else }}
-    {{- toYaml .defaultVals.spec.additionalLabels | nindent 4 }}
+    {{- if eq (len .availabilityZones) 1 }}
+    topology.ebs.csi.aws.com/zone: {{ index .availabilityZones 0 }}
     {{- end }}
-  {{- if .values.spec.providerIDList }}
-  providerIDList:
-  {{- toYaml .values.spec.providerIDList | nindent 2 }}
+  {{- if or (.defaultVals.spec.taints) ((.values.spec | default dict).taints) }}
+  taints:
+  {{- toYaml ((.values.spec | default dict).taints | default .defaultVals.spec.taints) | nindent 2 }}
   {{- end }}
-  machineType: {{ (.values.spec | default dict).machineType | default .defaultVals.spec.machineType }}
-  diskSizeGb: {{ (.values.spec | default dict).diskSizeGb | default .defaultVals.spec.diskSizeGb }}
-  diskType: {{ (.values.spec | default dict).diskType | default .defaultVals.spec.diskType }}
-  spot: {{ (.values.spec | default dict).spot | default .defaultVals.spec.spot }}
-  preemptible: {{ (.values.spec | default dict).preemptible | default .defaultVals.spec.preemptible }}
-  imageType: {{ (.values.spec | default dict).imageType | default .defaultVals.spec.imageType }}
+  {{- if $updateConfig }}
+  updateConfig:
+    {{- toYaml $updateConfig | nindent 4 }}
+  {{- end }}
+  additionalTags:
+    {{- if (dig "spec" "additionalTags" .values) }}
+    {{- toYaml (merge .values.spec.additionalTags .defaultVals.spec.additionalTags) | nindent 4 }}
+    {{- else -}}
+    {{- toYaml .defaultVals.spec.additionalTags | nindent 4 }}
+    {{- end }}
+  {{- if or (.defaultVals.spec.roleAdditionalPolicies) ((.values.spec | default dict).roleAdditionalPolicies) }}
+  roleAdditionalPolicies:
+  {{- toYaml ((.values.spec | default dict).roleAdditionalPolicies | default .defaultVals.spec.roleAdditionalPolicies) | nindent 2 }}
+  {{- end }}
 ---
 {{- include "workers.machinePool" (dict "ctx" .ctx "name" .name "values" .values "defaultVals" .defaultVals) }}
 {{- end }}
