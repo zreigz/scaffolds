@@ -5,11 +5,13 @@ metadata:
   annotations:
     helm.sh/resource-policy: keep
 spec:
+  {{- if .Values.cluster.clusterIdentity -}}
   identityRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: AzureClusterIdentity
     name: {{ .Values.cluster.clusterIdentity.name }}
     namespace: {{ .Release.Namespace }}
+  {{- end }}
   location: {{ .Values.cluster.location }}
   resourceGroupName: {{ .Values.cluster.resourceGroupName }}
   nodeResourceGroupName: {{ .Values.cluster.nodeResourceGroupName }}

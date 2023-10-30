@@ -8,17 +8,17 @@ cluster:
     - 192.168.0.0/16 # TODO: shouldn't this also be getting propagated to things like what `.Values.cluster.aws.network.vpc.cidrBlock` is setting?
   ## The cidr blocks for services
   serviceCidrBlocks: [] # TODO: check if we should be setting this
-  clusterIdentity:
-    # Service Principal client ID used during bootstrapping.
-    clientID: ""
-    # Service Principal password used during bootstrapping.
-    clientSecret: ""
-    # Settings for the workload identity used by the cluster after bootstrapping.
-    # Primary tenant ID for the cluster Identity.
-    tenantID: ""
-    # Name of AzureClusterIdentity to be used when reconciling this cluster.
-    # This field is only used when workloadIdentity is disabled and not used during cluster bootstrapping.
-    name: ""
+  clusterIdentity: {}
+  # # Service Principal client ID used during bootstrapping.
+  # clientID: ""
+  # # Service Principal password used during bootstrapping.
+  # clientSecret: ""
+  # # Settings for the workload identity used by the cluster after bootstrapping.
+  # # Primary tenant ID for the cluster Identity.
+  # tenantID: ""
+  # # Name of AzureClusterIdentity to be used when reconciling this cluster.
+  # # This field is only used when workloadIdentity is disabled and not used during cluster bootstrapping.
+  # name: ""
   # GUID of the Azure subscription to hold this cluster.
   subscriptionID: ""
   # String matching one of the canonical Azure region names.
