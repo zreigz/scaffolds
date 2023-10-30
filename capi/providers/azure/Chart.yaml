@@ -2,7 +2,7 @@ apiVersion: v2
 name: cluster-api-provider-azure
 description: A base Helm chart for Azure Cluster API controller
 type: application
-version: 0.0.0
+version: 0.0.1
 appVersion: v1.11.4
 dependencies:
   - name: cluster-api-provider-azure
