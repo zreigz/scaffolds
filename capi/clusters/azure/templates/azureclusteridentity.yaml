@@ -1,4 +1,3 @@
-{{- if eq .Values.type "managed" -}}
 kind: AzureClusterIdentity
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
@@ -9,8 +8,8 @@ metadata:
 spec:
   type: ServicePrincipal
   allowedNamespaces: {}
-  tenantID: {{ .Values.cluster.azure.clusterIdentity.tenantID }}
-  clientID: {{ .Values.cluster.azure.clusterIdentity.bootstrapCredentials.clientID }}
+  tenantID: {{ .Values.cluster.clusterIdentity.tenantID }}
+  clientID: {{ .Values.cluster.clusterIdentity.clientID }}
   clientSecret:
     name: {{ include "azure-bootstrap.identity-credentials" . }}
     namespace: {{ .Release.Namespace }}
@@ -24,7 +23,7 @@ metadata:
   {{- include "cluster-api-cluster.labels" . | nindent 4 }}
 type: Opaque
 data:
-  clientSecret: {{ .Values.cluster.azure.clusterIdentity.bootstrapCredentials.clientSecret | b64enc | quote }}
+  clientSecret: {{ .Values.cluster.clusterIdentity.clientSecret | b64enc | quote }}
 ---
 apiVersion: aadpodidentity.k8s.io/v1
 kind: AzureIdentity
@@ -40,11 +39,11 @@ metadata:
 spec:
   adEndpoint: https://login.microsoftonline.com/
   adResourceID: https://management.azure.com/
-  clientID: {{ .Values.cluster.azure.clusterIdentity.bootstrapCredentials.clientID }}
+  clientID: {{ .Values.cluster.clusterIdentity.clientID }}
   clientPassword:
     name: {{ include "azure-bootstrap.identity-credentials" . }}
     namespace: {{ .Release.Namespace }}
-  tenantID: {{ .Values.cluster.azure.clusterIdentity.tenantID }}
+  tenantID: {{ .Values.cluster.clusterIdentity.tenantID }}
   type: 1
 ---
 apiVersion: aadpodidentity.k8s.io/v1
@@ -59,4 +58,3 @@ metadata:
 spec:
   azureIdentity: {{ include "azure-bootstrap.pod-identity-name" . }}
   selector: capz-controller-aadpodidentity-selector
-{{- end }}

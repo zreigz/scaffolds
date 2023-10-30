@@ -1,6 +1,3 @@
-## managed or unmanaged, currently only managed is supported
-type: managed
-
 cluster:
   ## The name of the cluster
   name: plural
@@ -11,96 +8,92 @@ cluster:
     - 192.168.0.0/16 # TODO: shouldn't this also be getting propagated to things like what `.Values.cluster.aws.network.vpc.cidrBlock` is setting?
   ## The cidr blocks for services
   serviceCidrBlocks: [] # TODO: check if we should be setting this
-  azure:
-    clusterIdentity:
-      bootstrapMode: false
-      # Credentials for the cluster identity used to bootstrap cluster.
-      bootstrapCredentials:
-        # Service Principal client ID used during bootstrapping.
-        clientID: ""
-        # Service Principal password used during bootstrapping.
-        clientSecret: ""
-      # Settings for the workload identity used by the cluster after bootstrapping.
-      # Primary tenant ID for the cluster Identity.
-      tenantID: ""
-      # Name of AzureClusterIdentity to be used when reconciling this cluster.
-      # This field is only used when workloadIdentity is disabled and not used during cluster bootstrapping.
-      name: ""
-    # GUID of the Azure subscription to hold this cluster.
-    subscriptionID: ""
-    # String matching one of the canonical Azure region names.
-    # Examples: westus2, eastus.
-    location: ""
-    # Name of the Azure resource group for this AKS Cluster.
-    resourceGroupName: ""
-    # Name of the resource group containing cluster IaaS resources.
-    nodeResourceGroupName: ""
-    # Describes the vnet for the AKS cluster. Will be created if it does not exist.
-    virtualNetwork:
-      cidrBlock: 10.1.0.0/16
-      name: ""
-      subnet:
-        cidrBlock: 10.1.0.0/18
-        name: plural-subnet
-    # Network plugin used for building Kubernetes network.
-    # One of: azure, kubenet.
-    networkPlugin: azure
-    # Network policy used for building Kubernetes network.
-    # One of: azure, calico.
-    networkPolicy: azure
-    # Outbound configuration used by Nodes.
-    # One of: loadBalancer, managedNATGateway, userAssignedNATGateway, userDefinedRouting.
-    outboundType: ""
-    # String literal containing an SSH public key base64 encoded.
-    # Use empty value "" to autogenerate new key. Use "skip" value to not set the key.
-    sshPublicKey: ""
-    # DNSServiceIP is an IP address assigned to the Kubernetes DNS service.
-    # It must be within the Kubernetes service address range specified in serviceCidr.
-    dnsServiceIP: ""
-    # Identity configuration used by the AKS control plane.
-    identity:
-      # The identity type to use.
-      # One of: SystemAssigned, UserAssigned.
-      type: SystemAssigned
-    # SKU of the AKS to be provisioned.
-    sku:
-      tier: Standard
-    # SKU of the loadBalancer to be provisioned.
-    # One of: Basic, Standard.
-    loadBalancerSKU: Standard
-    # OIDC issuer profile of the cluster.
-    oidcIssuerProfile:
-      enabled: true
-    # Azure Active Directory configuration to integrate with AKS for AAD authentication.
-    aadProfile: {}
-    # Profile of the cluster load balancer.
-    loadBalancerProfile: {}
-    # Access profile for AKS API server.
-    apiServerAccessProfile: {}
-    # Parameters to be applied to the cluster-autoscaler when enabled.
-    autoscalerProfile:
-      # Default is false. Changed to true as in old bootstrap.
-      balanceSimilarNodeGroups: "true"
-      # One of: least-waste, most-pods, priority, random.
-      expander: random
-      maxEmptyBulkDelete: "10"
-      maxGracefulTerminationSec: "600"
-      maxNodeProvisionTime: 15m
-      maxTotalUnreadyPercentage: "45"
-      newPodScaleUpDelay: 0s
-      okTotalUnreadyCount: "3"
-      scanInterval: 10s
-      scaleDownDelayAfterAdd: 10m
-      scaleDownDelayAfterDelete: 10s
-      scaleDownDelayAfterFailure: 3m
-      scaleDownUnneededTime: 10m
-      scaleDownUnreadyTime: 20m
-      # Default is 0.5. Changed to 0.7 as in old bootstrap.
-      scaleDownUtilizationThreshold: "0.7"
-      skipNodesWithLocalStorage: "false"
-      skipNodesWithSystemPods: "true"
-    # Profiles of managed cluster add-on.
-    addonProfiles: []
+  clusterIdentity:
+    # Service Principal client ID used during bootstrapping.
+    clientID: ""
+    # Service Principal password used during bootstrapping.
+    clientSecret: ""
+    # Settings for the workload identity used by the cluster after bootstrapping.
+    # Primary tenant ID for the cluster Identity.
+    tenantID: ""
+    # Name of AzureClusterIdentity to be used when reconciling this cluster.
+    # This field is only used when workloadIdentity is disabled and not used during cluster bootstrapping.
+    name: ""
+  # GUID of the Azure subscription to hold this cluster.
+  subscriptionID: ""
+  # String matching one of the canonical Azure region names.
+  # Examples: westus2, eastus.
+  location: ""
+  # Name of the Azure resource group for this AKS Cluster.
+  resourceGroupName: ""
+  # Name of the resource group containing cluster IaaS resources.
+  nodeResourceGroupName: ""
+  # Describes the vnet for the AKS cluster. Will be created if it does not exist.
+  virtualNetwork:
+    cidrBlock: 10.1.0.0/16
+    name: ""
+    subnet:
+      cidrBlock: 10.1.0.0/18
+      name: plural-subnet
+  # Network plugin used for building Kubernetes network.
+  # One of: azure, kubenet.
+  networkPlugin: azure
+  # Network policy used for building Kubernetes network.
+  # One of: azure, calico.
+  networkPolicy: azure
+  # Outbound configuration used by Nodes.
+  # One of: loadBalancer, managedNATGateway, userAssignedNATGateway, userDefinedRouting.
+  outboundType: ""
+  # String literal containing an SSH public key base64 encoded.
+  # Use empty value "" to autogenerate new key. Use "skip" value to not set the key.
+  sshPublicKey: ""
+  # DNSServiceIP is an IP address assigned to the Kubernetes DNS service.
+  # It must be within the Kubernetes service address range specified in serviceCidr.
+  dnsServiceIP: ""
+  # Identity configuration used by the AKS control plane.
+  identity:
+    # The identity type to use.
+    # One of: SystemAssigned, UserAssigned.
+    type: SystemAssigned
+  # SKU of the AKS to be provisioned.
+  sku:
+    tier: Standard
+  # SKU of the loadBalancer to be provisioned.
+  # One of: Basic, Standard.
+  loadBalancerSKU: Standard
+  # OIDC issuer profile of the cluster.
+  oidcIssuerProfile:
+    enabled: true
+  # Azure Active Directory configuration to integrate with AKS for AAD authentication.
+  aadProfile: {}
+  # Profile of the cluster load balancer.
+  loadBalancerProfile: {}
+  # Access profile for AKS API server.
+  apiServerAccessProfile: {}
+  # Parameters to be applied to the cluster-autoscaler when enabled.
+  autoscalerProfile:
+    # Default is false. Changed to true as in old bootstrap.
+    balanceSimilarNodeGroups: "true"
+    # One of: least-waste, most-pods, priority, random.
+    expander: random
+    maxEmptyBulkDelete: "10"
+    maxGracefulTerminationSec: "600"
+    maxNodeProvisionTime: 15m
+    maxTotalUnreadyPercentage: "45"
+    newPodScaleUpDelay: 0s
+    okTotalUnreadyCount: "3"
+    scanInterval: 10s
+    scaleDownDelayAfterAdd: 10m
+    scaleDownDelayAfterDelete: 10s
+    scaleDownDelayAfterFailure: 3m
+    scaleDownUnneededTime: 10m
+    scaleDownUnreadyTime: 20m
+    # Default is 0.5. Changed to 0.7 as in old bootstrap.
+    scaleDownUtilizationThreshold: "0.7"
+    skipNodesWithLocalStorage: "false"
+    skipNodesWithSystemPods: "true"
+  # Profiles of managed cluster add-on.
+  addonProfiles: []
 
 workerDefaults:
   replicas: 0

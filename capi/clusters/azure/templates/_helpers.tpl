@@ -51,17 +51,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "cluster-api-cluster.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "cluster-api-cluster.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
 Creates the Kubernetes version for the cluster
 # TODO: this should actually be used to sanatize the `.Values.cluster.kubernetesVersion` value to what the providers support instead of defining these static versions
 */}}
@@ -116,7 +105,7 @@ spec:
         {{- include "workers.configref" .ctx | nindent 8 }}
         {{- end }}
       infrastructureRef:
-        name: {{ .name }}
+        name: {{ .ctx.Values.cluster.name }}-{{ .name }}
         apiVersion: {{ include "workers.infrastructure.apiVersion" .ctx }}
         kind: {{ include "workers.infrastructure.kind" .ctx }}
 {{- end }}
@@ -181,7 +170,7 @@ metadata:
     {{- else -}}
     {{- toYaml .defaultVals.labels | nindent 4 }}
     {{- end }}
-  name: {{ .name }}
+  name: {{ .ctx.Values.cluster.name }}-{{ .name }}
 spec:
   name: {{ .name }}
   additionalTags:

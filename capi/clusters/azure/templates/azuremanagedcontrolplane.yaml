@@ -1,4 +1,3 @@
-{{- if eq .Values.type "managed" -}}
 kind: AzureManagedControlPlane
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
@@ -9,59 +8,54 @@ spec:
   identityRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: AzureClusterIdentity
-    {{- if .Values.cluster.azure.clusterIdentity.bootstrapMode }}
-    name: {{ include "azure-bootstrap.cluster-identity-name" . }}
-    {{- else }}
-    name: {{ .Values.cluster.azure.clusterIdentity.name }}
-    {{- end }}
+    name: {{ .Values.cluster.clusterIdentity.name }}
     namespace: {{ .Release.Namespace }}
-  location: {{ .Values.cluster.azure.location }}
-  resourceGroupName: {{ .Values.cluster.azure.resourceGroupName }}
-  nodeResourceGroupName: {{ .Values.cluster.azure.nodeResourceGroupName }}
-  subscriptionID: {{ .Values.cluster.azure.subscriptionID }}
+  location: {{ .Values.cluster.location }}
+  resourceGroupName: {{ .Values.cluster.resourceGroupName }}
+  nodeResourceGroupName: {{ .Values.cluster.nodeResourceGroupName }}
+  subscriptionID: {{ .Values.cluster.subscriptionID }}
   version: {{ include "cluster.kubernetesVersion" . }}
-  {{- if ne .Values.cluster.azure.sshPublicKey "skip" }}
-  sshPublicKey: {{ .Values.cluster.azure.sshPublicKey | quote }}
+  {{- if ne .Values.cluster.sshPublicKey "skip" }}
+  sshPublicKey: {{ .Values.cluster.sshPublicKey | quote }}
   {{- end }}
-  {{- with .Values.cluster.azure.virtualNetwork }}
+  {{- with .Values.cluster.virtualNetwork }}
   virtualNetwork:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  networkPlugin: {{ .Values.cluster.azure.networkPlugin }}
-  networkPolicy: {{ .Values.cluster.azure.networkPolicy }}
-  outboundType: {{ .Values.cluster.azure.outboundType }}
-  dnsServiceIP: {{ .Values.cluster.azure.dnsServiceIP }}
-  {{- with .Values.cluster.azure.identity }}
+  networkPlugin: {{ .Values.cluster.networkPlugin }}
+  networkPolicy: {{ .Values.cluster.networkPolicy }}
+  outboundType: {{ .Values.cluster.outboundType }}
+  dnsServiceIP: {{ .Values.cluster.dnsServiceIP }}
+  {{- with .Values.cluster.identity }}
   identity:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.cluster.azure.sku }}
+  {{- with .Values.cluster.sku }}
   sku:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  loadBalancerSKU: {{ .Values.cluster.azure.loadBalancerSKU }}
-  {{- with .Values.cluster.azure.oidcIssuerProfile }}
+  loadBalancerSKU: {{ .Values.cluster.loadBalancerSKU }}
+  {{- with .Values.cluster.oidcIssuerProfile }}
   oidcIssuerProfile:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.cluster.azure.aadProfile }}
+  {{- with .Values.cluster.aadProfile }}
   aadProfile:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.cluster.azure.loadBalancerProfile }}
+  {{- with .Values.cluster.loadBalancerProfile }}
   loadBalancerProfile:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.cluster.azure.apiServerAccessProfile }}
+  {{- with .Values.cluster.apiServerAccessProfile }}
   apiServerAccessProfile:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.cluster.azure.autoscalerProfile }}
+  {{- with .Values.cluster.autoscalerProfile }}
   autoscalerProfile:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.cluster.azure.addonProfiles }}
+  {{- with .Values.cluster.addonProfiles }}
   addonProfiles:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-{{- end }}

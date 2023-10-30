@@ -1,4 +1,3 @@
-{{- if eq .Values.type "managed" -}}
 {{- $currentScope := . -}}
 {{- $defaultVals := .Values.workerDefaults -}}
 {{- range $name, $values := .Values.workers }}
@@ -19,4 +18,3 @@
 {{- end }}
 {{- end }}
 {{- end }}
-{{ end }}
