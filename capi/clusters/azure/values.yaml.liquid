@@ -1,0 +1,24 @@
+cluster:
+  name: {{ configuration.clusterName }}
+  kubernetesVersion: {{ configuration.version }} # Use v1.25.11 for testing.
+  azure:
+    region: {{ configuration.region }}
+
+
+
+
+
+  {{- if eq .Provider "azure" }}
+  kubernetesVersion:
+  azure:
+    clusterIdentity:
+      workloadIdentity:
+        clientID: {{ importValue "Terraform" "capz_assigned_identity_client_id" }}
+      tenantID: {{ .Context.TenantId }}
+    subscriptionID: {{ .Context.SubscriptionId }}
+    location: {{ .Region }}
+    resourceGroupName: {{ .Project }}
+    virtualNetwork:
+      name: {{ .Values.network_name | quote }}
+  {{- end }}
+
