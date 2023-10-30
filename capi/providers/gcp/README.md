@@ -1,3 +1,3 @@
-# Workload Cluster
+# GCP Cluster API Controller
 
-A helm chart that deploys a workload cluster using the Cluster-API project
+A helm chart that deploys a GCP Cluster API controller (capg).
