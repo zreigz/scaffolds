@@ -1,5 +1,6 @@
 cluster-api-provider-azure:
   asoControllerSettings:
-    azureSubscriptionId: {{ configuration.subscriptionId }}
+    azureSubscriptionId: {{ configuration.subscriptionId }} # TODO: Not available atm.
     azureTenantId: {{ configuration.tenantId }}
-    azureClientId: {{ configuration.azureClientId }}
+    azureClientId: {{ configuration.clientId }}
+    azureClientSecret: {{ configuration.clientSecret }}
