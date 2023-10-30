@@ -1,5 +1,4 @@
 cluster-api-provider-azure:
-  bootstrapMode: true # using Service Principal to authenticate
   configVariables:
     exprimental:
       machinePool: true
