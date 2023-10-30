@@ -81,14 +81,13 @@ spec:
   replicas: {{ $replicas }}
   template:
     spec:
-      version: {{ .values.kubernetesVersion | default .ctx.Values.cluster.kubernetesVersion | quote }}
       clusterName: {{ .ctx.Values.cluster.name }}
       bootstrap:
         dataSecretName: ""
       infrastructureRef:
         name: {{ .ctx.Values.cluster.name }}-{{ .name }}
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-        kind: GCPManagedMachinePool
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSManagedMachinePool
 {{- end }}
 
 {{/*
@@ -139,7 +138,7 @@ metadata:
     {{- else -}}
     {{- toYaml .defaultVals.labels | nindent 4 }}
     {{- end }}
-  name: {{ .name }}
+  name: {{ .ctx.Values.cluster.name }}-{{ .name }}
 spec:
   amiType: {{ $amiType }}
   amiVersion: {{ (.values.spec | default dict).amiVersion | default .defaultVals.spec.amiVersion }}
