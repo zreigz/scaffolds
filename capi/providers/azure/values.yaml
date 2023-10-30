@@ -1,0 +1,25 @@
+cluster-api-provider-azure:
+  configVariables:
+    exprimental:
+      machinePool: true
+  controllerManager:
+    manager:
+      image:
+        repository: ghcr.io/kubernetes-sigs/cluster-api-azure-controller
+        tag: v1.11.3
+  asoControllerSettings:
+    azureClientId: ""
+    azureSubscriptionId: ""
+    azureTenantId: ""
+    azureClientSecret: ""
+
+job:
+  enabled: true
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+  image:
+    repository: gcr.io/pluralsh/bitnami/kubectl
+    tag: 1.25.8
+    pullPolicy: IfNotPresent
