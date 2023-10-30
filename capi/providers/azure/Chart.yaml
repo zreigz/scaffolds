@@ -1,0 +1,10 @@
+apiVersion: v2
+name: azure-provider
+description: A base Helm chart for Azure Cluster API controller
+type: application
+version: 0.0.0
+appVersion: v1.11.3
+dependencies:
+  - name: cluster-api-provider-azure
+    version: 0.1.15
+    repository: https://pluralsh.github.io/capi-helm-charts
