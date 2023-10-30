@@ -15,10 +15,10 @@ spec:
       cidrBlocks: {{ toYaml . | nindent 6 }}
     {{- end }}
   infrastructureRef:
-    kind: {{ include "cluster.infrastructure.kind" . }}
-    apiVersion: {{ include "cluster.infrastructure.apiVersion" . }}
+    kind: AzureManagedCluster
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     name: {{ .Values.cluster.name }}
   controlPlaneRef:
-    kind: {{ include "cluster.controlPlane.kind" . }}
-    apiVersion: {{ include "cluster.controlPlane.apiVersion" . }}
+    kind: AzureManagedControlPlane
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     name: {{ .Values.cluster.name }}
