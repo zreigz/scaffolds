@@ -1,0 +1,10 @@
+apiVersion: v2
+name: aws-provider
+description: A base Helm chart for AWS provider
+type: application
+version: 0.0.1
+appVersion: v0.0.1
+dependencies:
+  - name: cluster-api-provider-aws
+    version: 0.1.9
+    repository: https://pluralsh.github.io/capi-helm-charts
