@@ -143,6 +143,7 @@ workers:
   groups:
     small-burst-spot:
       isMultiAZ: true
+      replicas: 1
       spec:
         labels:
           plural.sh/capacityType: SPOT
