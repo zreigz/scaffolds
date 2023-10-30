@@ -17,9 +17,6 @@ spec:
   nodeResourceGroupName: {{ .Values.cluster.nodeResourceGroupName }}
   subscriptionID: {{ .Values.cluster.subscriptionID }}
   version: {{ .Values.cluster.kubernetesVersion }}
-  {{- if ne .Values.cluster.sshPublicKey "skip" }}
-  sshPublicKey: {{ .Values.cluster.sshPublicKey | quote }}
-  {{- end }}
   {{- with .Values.cluster.virtualNetwork }}
   virtualNetwork:
     {{- toYaml . | nindent 4 }}

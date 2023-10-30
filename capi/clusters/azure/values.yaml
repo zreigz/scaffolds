@@ -44,9 +44,6 @@ cluster:
   # Outbound configuration used by Nodes.
   # One of: loadBalancer, managedNATGateway, userAssignedNATGateway, userDefinedRouting.
   outboundType: ""
-  # String literal containing an SSH public key base64 encoded.
-  # Use empty value "" to autogenerate new key. Use "skip" value to not set the key.
-  sshPublicKey: ""
   # DNSServiceIP is an IP address assigned to the Kubernetes DNS service.
   # It must be within the Kubernetes service address range specified in serviceCidr.
   dnsServiceIP: ""
