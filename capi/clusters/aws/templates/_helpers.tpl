@@ -138,7 +138,7 @@ metadata:
     {{- else -}}
     {{- toYaml .defaultVals.labels | nindent 4 }}
     {{- end }}
-  name: {{ .name }}
+  name: {{ .ctx.Values.cluster.name }}-{{ .name }}
 spec:
   amiType: {{ $amiType }}
   amiVersion: {{ (.values.spec | default dict).amiVersion | default .defaultVals.spec.amiVersion }}
