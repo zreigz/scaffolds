@@ -1,1 +1,5 @@
-
+cluster-api-provider-aws:
+  managerBootstrapCredentials:
+    AWS_ACCESS_KEY_ID: {{ configuration.accessKeyId }}
+    AWS_SECRET_ACCESS_KEY: {{ configuration.secretAccessKey }}
+    AWS_SESSION_TOKEN: {{ configuration.secretAccessToken }}
