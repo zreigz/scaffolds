@@ -81,7 +81,7 @@ spec:
   replicas: {{ $replicas }}
   template:
     spec:
-      version: "v{{ trimPrefix "v" (.values.kubernetesVersion | default .ctx.Values.cluster.kubernetesVersion) }}"
+      version: v{{ trimPrefix "v" (.values.kubernetesVersion | default .ctx.Values.cluster.kubernetesVersion | toString) }}
       clusterName: {{ .ctx.Values.cluster.name }}
       bootstrap:
         dataSecretName: ""
