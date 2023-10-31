@@ -24,16 +24,3 @@ type: Opaque
 data:
   clientSecret: {{ .Values.identity.clientSecret | b64enc | quote }}
 {{- end }}
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "cluster-api-provider-azure.fullname" . }}-aso-controller-settings
-  labels:
-  {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
-stringData:
-  AZURE_CLIENT_ID: {{ .Values.identity.clientId | quote }}
-  AZURE_CLIENT_SECRET: {{ .Values.identity.clientSecret | quote }}
-  AZURE_SUBSCRIPTION_ID: {{ .Values.identity.subscriptionId | quote }}
-  AZURE_TENANT_ID: {{ .Values.identity.tenantId | quote }}
-type: Opaque

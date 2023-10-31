@@ -5,7 +5,6 @@ identity:
   clientId: ""
   clientSecret: ""
   tenantId: ""
-  subscriptionId: ""
 
 cluster-api-provider-azure:
   configVariables:
