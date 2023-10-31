@@ -21,5 +21,5 @@ spec:
     host: ""
     port: 0
   {{- end }}
-  controlPlaneVersion: v{{ trimPrefix "v" .Values.cluster.kubernetesVersion }}
+  controlPlaneVersion: "v{{ trimPrefix "v" .Values.cluster.kubernetesVersion }}"
 {{- end }}
