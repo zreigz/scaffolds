@@ -1,0 +1,26 @@
+{{- if .Values.identity -}}
+kind: AzureClusterIdentity
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+metadata:
+  name: {{ .Values.identity.name }}
+  labels:
+  {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
+spec:
+  type: ServicePrincipal
+  allowedNamespaces: {}
+  tenantID: {{ .Values.identity.tenantID }}
+  clientID: {{ .Values.identity.clientID }}
+  clientSecret:
+    name: {{ .Values.identity.name }}
+    namespace: {{ .Release.Namespace }}
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: {{ .Values.identity.name }}
+  labels:
+  {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
+type: Opaque
+data:
+  clientSecret: {{ .Values.identity.clientSecret | b64enc | quote }}
+{{- end }}

@@ -1,3 +1,11 @@
+# nameOverride: ""
+
+identity:
+  name: "default-identity"
+  clientID: ""
+  clientSecret: ""
+  tenantID: ""
+
 cluster-api-provider-azure:
   configVariables:
     exprimental:
@@ -12,14 +20,3 @@ cluster-api-provider-azure:
     azureSubscriptionId: ""
     azureTenantId: ""
     azureClientSecret: ""
-
-job:
-  enabled: true
-  annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-weight: "-5"
-    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
-  image:
-    repository: gcr.io/pluralsh/bitnami/kubectl
-    tag: 1.25.8
-    pullPolicy: IfNotPresent
