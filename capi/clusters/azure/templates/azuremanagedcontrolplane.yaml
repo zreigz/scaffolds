@@ -11,15 +11,18 @@ spec:
     kind: AzureClusterIdentity
     name: {{ .Values.cluster.clusterIdentity.name }}
     namespace: {{ .Release.Namespace }}
+  {{- else }}
+  identityRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    kind: AzureClusterIdentity
+    name: "default-identity" # Refers to the identity created in the capi/providers/azure/templates/identity.yaml.
+    namespace: {{ .Release.Namespace }}
   {{- end }}
   location: {{ .Values.cluster.location }}
   resourceGroupName: {{ .Values.cluster.resourceGroupName }}
   nodeResourceGroupName: {{ .Values.cluster.nodeResourceGroupName }}
   subscriptionID: {{ .Values.cluster.subscriptionID }}
   version: {{ .Values.cluster.kubernetesVersion }}
-  {{- if ne .Values.cluster.sshPublicKey "skip" }}
-  sshPublicKey: {{ .Values.cluster.sshPublicKey | quote }}
-  {{- end }}
   {{- with .Values.cluster.virtualNetwork }}
   virtualNetwork:
     {{- toYaml . | nindent 4 }}
