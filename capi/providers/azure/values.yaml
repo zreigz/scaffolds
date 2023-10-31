@@ -1,10 +1,11 @@
-# nameOverride: ""
+nameOverride: capz
+fullnameOverride: ""
 
 identity:
-  name: "default-identity"
-  clientID: ""
+  clientId: ""
   clientSecret: ""
-  tenantID: ""
+  tenantId: ""
+  subscriptionId: ""
 
 cluster-api-provider-azure:
   configVariables:

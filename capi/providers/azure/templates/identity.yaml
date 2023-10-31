@@ -2,25 +2,38 @@
 kind: AzureClusterIdentity
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
-  name: {{ .Values.identity.name }}
+  name: "default-identity"
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 spec:
   type: ServicePrincipal
   allowedNamespaces: {}
-  tenantID: {{ .Values.identity.tenantID }}
-  clientID: {{ .Values.identity.clientID }}
+  tenantID: {{ .Values.identity.tenantId }}
+  clientID: {{ .Values.identity.clientId }}
   clientSecret:
-    name: {{ .Values.identity.name }}
+    name: "default-identity-secret"
     namespace: {{ .Release.Namespace }}
 ---
 kind: Secret
 apiVersion: v1
 metadata:
-  name: {{ .Values.identity.name }}
+  name:  "default-identity-secret"
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 type: Opaque
 data:
   clientSecret: {{ .Values.identity.clientSecret | b64enc | quote }}
 {{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "cluster-api-provider-azure.fullname" . }}-aso-controller-settings
+  labels:
+  {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
+stringData:
+  AZURE_CLIENT_ID: {{ .Values.identity.clientId | quote }}
+  AZURE_CLIENT_SECRET: {{ .Values.identity.clientSecret | quote }}
+  AZURE_SUBSCRIPTION_ID: {{ .Values.identity.subscriptionId | quote }}
+  AZURE_TENANT_ID: {{ .Values.identity.tenantId | quote }}
+type: Opaque
