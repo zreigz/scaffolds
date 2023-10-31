@@ -116,7 +116,6 @@ cluster:
       disable: false
 workers:
   defaults:
-    replicas: 0
     labels: { }
     annotations:
       cluster.x-k8s.io/replicas-managed-by: external-autoscaler
@@ -143,7 +142,6 @@ workers:
   groups:
     small-burst-spot:
       isMultiAZ: true
-      replicas: 1
       spec:
         labels:
           plural.sh/capacityType: SPOT
@@ -151,15 +149,10 @@ workers:
           plural.sh/scalingGroup: small-burst-spot
         additionalTags: { } # TODO: allow this to not be set
         capacityType: spot
-        scaling:
-          maxSize: 27
-          minSize: 0
         taints:
           - effect: no-schedule
             key: plural.sh/capacityType
             value: SPOT
-        updateConfig:
-          maxUnavailable: 1
     medium-burst-spot:
       isMultiAZ: true
       spec:
@@ -171,7 +164,7 @@ workers:
         capacityType: spot
         instanceType: t3.xlarge
         scaling:
-          maxSize: 27
+          maxSize: 5
           minSize: 0
         taints:
           - effect: no-schedule
@@ -188,7 +181,7 @@ workers:
         instanceType: t3.2xlarge
         capacityType: spot
         scaling:
-          maxSize: 27
+          maxSize: 5
           minSize: 0
         taints:
           - effect: no-schedule

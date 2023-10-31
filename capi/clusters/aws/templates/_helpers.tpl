@@ -78,7 +78,7 @@ metadata:
     {{- end }}
 spec:
   clusterName: {{ .ctx.Values.cluster.name }}
-  replicas: {{ $replicas }}
+{{/*  replicas: {{ $replicas }}*/}}
   template:
     spec:
       clusterName: {{ .ctx.Values.cluster.name }}
