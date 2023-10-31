@@ -1,9 +1,8 @@
 cluster:
   name: {{ configuration.clusterName }}
-  kubernetesVersion: {{ configuration.version }} # Use v1.25.11 for testing.
+  kubernetesVersion: {{ configuration.version }}
   subscriptionID: {{ configuration.subscriptionId }}
   location: {{ configuration.location }}
   resourceGroupName: {{ configuration.resourceGroup }}
   virtualNetwork:
-    name: {{ configuration.network }}
-  # TODO: Fill identity credentials and update templates.
+    name: {{ configuration.clusterName }}-vnet
