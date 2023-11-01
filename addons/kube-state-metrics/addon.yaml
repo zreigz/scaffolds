@@ -1,0 +1,5 @@
+name: kube-state-metrics
+description: "adds basic node/pod metric information to a kubernetes cluster for use in the kubernetes dashboard"
+global: true
+icon: /chart.png
+configuration: []
