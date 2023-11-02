@@ -1,0 +1,5 @@
+name: kube-state-metrics
+description: "adds basic node/pod metric information to a kubernetes cluster to expose to prometheus"
+global: true
+icon: /chart.png
+configuration: []
