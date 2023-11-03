@@ -3,6 +3,7 @@ kind: AzureClusterIdentity
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
   name: default-identity
+  namespace: bootstrap # Always create it in bootstrap namespace, no matter if it is management or workload cluster.
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 spec:
@@ -12,12 +13,13 @@ spec:
   clientID: {{ .Values.identity.clientId }}
   clientSecret:
     name: default-identity-secret
-    namespace: {{ .Release.Namespace }}
+    namespace: bootstrap
 ---
 kind: Secret
 apiVersion: v1
 metadata:
   name:  default-identity-secret
+  namespace: bootstrap
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 type: Opaque

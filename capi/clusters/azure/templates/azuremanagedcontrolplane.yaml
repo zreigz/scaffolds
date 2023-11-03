@@ -12,11 +12,12 @@ spec:
     name: {{ .Values.cluster.clusterIdentity.name }}
     namespace: {{ .Release.Namespace }}
   {{- else }}
+  # Refers to the identity created in the capi/providers/azure/templates/identity.yaml.
   identityRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: AzureClusterIdentity
-    name: "default-identity" # Refers to the identity created in the capi/providers/azure/templates/identity.yaml.
-    namespace: {{ .Release.Namespace }}
+    name: default-identity
+    namespace: bootstrap
   {{- end }}
   location: {{ .Values.cluster.location }}
   resourceGroupName: {{ .Values.cluster.resourceGroupName }}
