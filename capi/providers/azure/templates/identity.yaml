@@ -2,7 +2,7 @@
 kind: AzureClusterIdentity
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
-  name: default-identity
+  name: default # Using same name as identity created by the management cluster, so it can be easily referenced.
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 spec:
