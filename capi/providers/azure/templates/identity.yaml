@@ -2,8 +2,10 @@
 kind: AzureClusterIdentity
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
-  name: default-identity
-  namespace: bootstrap # Always create it in bootstrap namespace, no matter if it is management or workload cluster.
+  # At the moment it is created with the same name and namespace as identity in the management cluster.
+  # TODO: Once we will be able to check management cloud name we can update this to use different name and chart release namespace.
+  name: default
+  namespace: bootstrap
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 spec:
