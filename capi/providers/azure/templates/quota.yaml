@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: capz-critical-pods
+  labels:
+  {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
+spec:
+  hard:
+    pods: 1G
+  scopeSelector:
+    matchExpressions:
+      - operator: In
+        scopeName: PriorityClass
+        values:
+          - system-node-critical

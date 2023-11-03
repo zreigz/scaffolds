@@ -2,7 +2,7 @@
 kind: AzureClusterIdentity
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 metadata:
-  name: "default-identity"
+  name: default-identity
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 spec:
@@ -11,13 +11,13 @@ spec:
   tenantID: {{ .Values.identity.tenantId }}
   clientID: {{ .Values.identity.clientId }}
   clientSecret:
-    name: "default-identity-secret"
+    name: default-identity-secret
     namespace: {{ .Release.Namespace }}
 ---
 kind: Secret
 apiVersion: v1
 metadata:
-  name:  "default-identity-secret"
+  name:  default-identity-secret
   labels:
   {{- include "cluster-api-provider-azure.labels" . | nindent 4 }}
 type: Opaque
