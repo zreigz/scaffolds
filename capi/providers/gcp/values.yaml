@@ -1,3 +1,6 @@
+nameOverride: capg
+fullnameOverride: ""
+
 crds:
   create: true
 
