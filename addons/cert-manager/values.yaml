@@ -4,3 +4,6 @@
 
 ownerEmail: someone@example.com
 ingressClass: nginx
+
+cert-manager:
+  installCRDs: true
