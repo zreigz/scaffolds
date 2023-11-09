@@ -1,0 +1,17 @@
+# Default values for kubecost.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  grafana:
+    enabled: false
+
+kubecost-cloud-agent:
+  imageVersion: lunar-sandwich.v0.1.2
+  cloudReportingServer: collector.app.kubecost.com:31357
+  networkCosts:
+    enabled: true
+
+  kubecostFrontend:
+    enabled: false
+  kubecostToken: CHANGEME
