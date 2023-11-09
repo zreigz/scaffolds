@@ -70,6 +70,13 @@ configuration:
     field: provider
     value: google
     operation: eq
+- name: gcpProject
+  type: string
+  documentation: GCP service account json key file with read/write access to Cloud dns
+  condition:
+    field: provider
+    value: google
+    operation: eq
 - name: cloudflareKey
   type: string
   documentation: Cloudflare api key

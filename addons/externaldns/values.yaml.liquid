@@ -23,6 +23,10 @@ external-dns:
   {% endif %}
 
   {% if configuration.googleApplicationCredentials %}
+  {% if configuration.gcpProject %}
+  extraArgs:
+  - --google-project={{ configuration.gcpProject }}
+  {% endif %}
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /.google/credentials.json
