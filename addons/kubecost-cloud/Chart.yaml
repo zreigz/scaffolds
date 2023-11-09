@@ -1,5 +1,5 @@
 apiVersion: v2
-name: kubecost
+name: kubecost-cloud
 description: Simple add-on to install kubecost agent in a tenant cluster
 type: application
 version: 0.1.0
