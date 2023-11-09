@@ -7,7 +7,7 @@ ingress-nginx:
     digest: null
     digestChroot: null
   admissionWebhooks:
-      enabled: false
+    enabled: false
   config:
     worker-shutdown-timeout: 240s
     proxy-body-size: '0'
