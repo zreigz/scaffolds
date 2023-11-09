@@ -64,10 +64,10 @@ ingress-nginx:
       enabled: false
       service:
         annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "10254"
-        prometheus.io/path: "/metrics"
-        prometheus.io/scheme: http
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "10254"
+          prometheus.io/path: "/metrics"
+          prometheus.io/scheme: http
       serviceMonitor:
         enabled: false
       prometheusRule:
