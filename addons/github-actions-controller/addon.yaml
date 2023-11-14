@@ -1,0 +1,5 @@
+name: github-actions-controller
+description: kubernetes operator to provision github actions
+global: true
+icon: https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
+configuration: []

@@ -1,0 +1,11 @@
+name: plrl-github-actions-runner
+description: kubernetes operator to provision github actions
+global: true
+icon: https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
+configuration:
+- name: githubConfigUrl
+  type: string
+  documentation: the url of the resource that will own your runner, eg https://github.com/<your-gh-org>
+- name: githubPat
+  type: string
+  documentation: a legacy Github personal access token the runner will authenticate as
