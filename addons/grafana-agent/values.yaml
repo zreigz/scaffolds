@@ -5,3 +5,5 @@ k8s-monitoring:
   externalServices:
     cost:
       enabled: false
+    prometheus:
+      writeEndpoint: /api/v1/push
