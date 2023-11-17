@@ -11,7 +11,8 @@ gha-runner-scale-set:
         fsGroup: 1001
       containers:
       - name: runner
-        image: ghcr.io/actions/actions-runner:2.311.0
+        image: ghcr.io/actions/actions-runner:latest
+        imagePullPolicy: Always
         command: ["/home/runner/run.sh"]
         env:
         - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
