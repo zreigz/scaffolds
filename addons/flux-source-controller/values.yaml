@@ -13,3 +13,5 @@ flux2:
     create: false
   notificationController:
     create: false
+  sourceController:
+    create: true
