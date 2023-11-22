@@ -4,4 +4,5 @@ metadata:
   name: bitnami
 spec:
   interval: 5m0s
+  type: oci
   url: oci://registry-1.docker.io/bitnamicharts
