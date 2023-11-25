@@ -15,3 +15,5 @@ flux2:
     create: false
   sourceController:
     create: true
+  policies:
+    create: false
