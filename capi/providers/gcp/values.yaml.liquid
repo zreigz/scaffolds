@@ -1,3 +1,3 @@
 cluster-api-provider-gcp:
   managerBootstrapCredentials:
-    credentialsJson: {{ configuration.applicationCredentials | b64dec }}
+    credentialsJson: {{ configuration.applicationCredentialsBase64 | b64dec }}

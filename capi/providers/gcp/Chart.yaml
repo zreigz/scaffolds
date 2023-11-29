@@ -2,7 +2,7 @@ apiVersion: v2
 name: gcp-provider
 description: A base Helm chart for GCP Cluster API controller
 type: application
-version: 0.0.0
+version: 0.0.1
 appVersion: v1.4.7
 dependencies:
   - name: cluster-api-provider-gcp
