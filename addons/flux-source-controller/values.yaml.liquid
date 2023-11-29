@@ -1,0 +1,7 @@
+{% if configuratation.gcpServiceAccount %}
+flux2:
+  sourceController:
+    serviceAccount:
+      annotations:
+       iam.gke.io/gcp-service-account: {{ configuratation.gcpServiceAccount }}
+{% endif %}
