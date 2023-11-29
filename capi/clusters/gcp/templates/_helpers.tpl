@@ -54,7 +54,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Depend-on cluster annotation
 */}}
 {{- define "workload-cluster.dependsOnAnnotation" -}}
-config.kubernetes.io/depends-on: cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/Cluster/{{ .Values.cluster.name }}
+config.kubernetes.io/depends-on: infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedCluster/{{ .Values.cluster.name }},infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedControlPlane/{{ .Values.cluster.name }}
 {{- end }}
 
 {{/*
@@ -77,7 +77,6 @@ metadata:
     {{- else -}}
     {{- toYaml .defaultVals.annotations | nindent 4 }}
     {{- end }}
-    {{- include "workload-cluster.dependsOnAnnotation" .ctx | nindent 4 }}
   labels:
     {{- if (hasKey .values "labels") -}}
     {{- toYaml (merge .values.labels .defaultVals.labels)| nindent 4 }}
@@ -128,7 +127,6 @@ metadata:
     {{- else -}}
     {{- toYaml .defaultVals.annotations | nindent 4 }}
     {{- end }}
-    {{- include "workload-cluster.dependsOnAnnotation" .ctx | nindent 4 }}
   labels:
     {{- if (hasKey .values "labels") -}}
     {{- toYaml (merge .values.labels .defaultVals.labels)| nindent 4 }}

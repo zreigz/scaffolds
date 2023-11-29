@@ -7,7 +7,6 @@ metadata:
     {{- include "workload-cluster.labels" . | nindent 4 }}
   annotations:
     helm.sh/resource-policy: keep
-    {{- include "workload-cluster.dependsOnAnnotation" . | nindent 4 }}
 spec:
   clusterName: {{ .Values.cluster.name }}
   {{- with .Values.cluster }}
