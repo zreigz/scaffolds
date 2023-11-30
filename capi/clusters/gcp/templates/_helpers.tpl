@@ -54,7 +54,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Depend-on cluster annotation
 */}}
 {{- define "workload-cluster.dependsOnAnnotation" -}}
-config.kubernetes.io/depends-on: infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedCluster/{{ .Values.cluster.name }},infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedControlPlane/{{ .Values.cluster.name }}
+config.kubernetes.io/depends-on: infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedCluster/{{ .Values.cluster.name }},infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedControlPlane/{{ .Values.cluster.name }},infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedMachinePool/{{ .Values.cluster.name }}-small-burst-on-demand,infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedMachinePool/{{ .Values.cluster.name }}-medium-burst-on-demand,infrastructure.cluster.x-k8s.io/namespaces/{{ .Release.Namespace }}/GCPManagedMachinePool/{{ .Values.cluster.name }}-large-burst-on-demand
 {{- end }}
 
 {{/*
