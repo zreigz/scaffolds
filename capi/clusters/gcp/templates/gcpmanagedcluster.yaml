@@ -7,6 +7,8 @@ metadata:
     {{- include "workload-cluster.labels" . | nindent 4 }}
   annotations:
     helm.sh/resource-policy: keep
+  finalizers:
+    - plural.sh
 spec:
   project: {{ .Values.cluster.project }}
   region: {{ .Values.cluster.region }}
